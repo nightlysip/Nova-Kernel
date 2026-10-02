@@ -36,25 +36,6 @@ on:
         required: false
         default: "https://github.com/KernelSU-Next/KernelSU-Next.git"
 
-      ksu_branch:
-        description: "KernelSU-Next branch"
-        required: false
-        type: choice
-        default: "legacy"
-        options:
-          - legacy
-          - main
-          - next
-          - susfs-main
-          - susfs-next
-          - legacy-susfs-v2
-          - custom
-
-      ksu_branch_custom:
-        description: "Custom KernelSU branch"
-        required: false
-        default: ""
-
       hook_type:
         description: "KernelSU hook type"
         required: false
@@ -96,7 +77,6 @@ env:
   SUSFS_ENABLED: ${{ github.event.inputs.SuSFS }}
   NOMOUNT_ENABLED: ${{ github.event.inputs.nomount }}
   KSU_REPO: ${{ github.event.inputs.ksu_repo }}
-  KSU_BRANCH: ${{ github.event.inputs.ksu_branch == 'custom' && github.event.inputs.ksu_branch_custom || github.event.inputs.ksu_branch }}
   HOOK_TYPE: ${{ github.event.inputs.hook_type }}
   # Kernel name, OS label, clang toolchain, per-device defconfig,
   # stock image URLs, DTB name, and every external patch/tool URL

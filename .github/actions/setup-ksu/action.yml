@@ -8,13 +8,16 @@ runs:
       run: |
         set -euo pipefail
         cd "$GITHUB_WORKSPACE"
+
         REPO="${KSU_REPO:-https://github.com/KernelSU-Next/KernelSU-Next.git}"
-        BRANCH="${KSU_BRANCH:-legacy}"
+        BRANCH="legacy"
+        COMMIT_SHA="9cb2efabce93346468ed3a525750a8e970afe3cd"
 
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
         echo "🧩 KernelSU integration"
         echo "Repository: ${REPO}"
         echo "Branch    : ${BRANCH}"
+        echo "Commit    : ${COMMIT_SHA}"
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
         rm -rf KernelSU
@@ -23,6 +26,10 @@ runs:
 
         rm -rf KernelSU
         git clone --depth=1 --filter=blob:none --single-branch -b "$BRANCH" "$REPO" KernelSU
+
+        # Pinned commit, so a new legacy head cannot silently change the build
+        git -C KernelSU fetch --depth=1 origin "$COMMIT_SHA"
+        git -C KernelSU checkout -q "$COMMIT_SHA"
 
         echo "✅ KernelSU integration finished"
         echo "ℹ️  This step intentionally does not run make."
